@@ -18,45 +18,72 @@
                 <th>Quantity</th>
                 <th>Product_Name</th>
                 <th>Price</th>
+
 			</tr>
 		</thead>
 		<tbody>
-			<!-- Incrusta el tr dinámico -->
         </tbody>
     </table>
 
+        <p id="productoSelec"></p>
+
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/3700816fe4e44252999626c1511db377/stock'
-    
+    const API = 'https://crudcrud.com/api/eb5bbac8a8fc41a296f7a59b531ffda1/stock'
+    let item = 0;
     let tbody = document.querySelector('tbody');
         console.log(API)
-
+        
 		axios.get(API).then( function (response){
-			// t= 1 + i
 			let tr = ``
-			let stock = response.data;
+            let stock = response.data;
+            
             console.log(response.data)
 			for (let i = stock.length - 1; i >= 0; i--) {
-				let producto = stock[i];
-
-				// Template
+                let producto = stock[i];
+                item = i    ;
 				tr += `
 					<tr>
 						<td>${producto._id}</td>
                         <td>${producto.cantidad}</td>
                         <td>${producto.nombre}</td>
                         <td>${producto.precio}</td>
-					</tr>
-				`
-			}
+			            <td>
+				            <button onclick="seleccionar(${item})"> Select </button>
+                        </td>
+                        <td>
+				            <button onclick="eliminar(${item})"> Delet </button>
+                        </td>
+                    </tr>
+                    
+                `   
+                console.log(item)
 
-			tbody.innerHTML = tr;
+			}
+            tbody.innerHTML = tr;
 
 			console.log("stock: ", stock)
 
 		}).catch( function (error){
 			console.log("error: ", error)
-		})
+        })
+        
+        function seleccionar (indiceobjeto) {
+            console.log(indiceobjeto)
+            axios.get(API).then( function (response) {
+                let stock2 = response.data
+            let productoSeleccionado = stock2[indiceobjeto]
+            console.log(productoSeleccionado)
+            })
+
+        }
+        function eliminar (indiceobjeto) {
+            console.log(indiceobjeto)
+            axios.get(API).then( function (response) {
+                let stock2 = response.data
+                console.log(stock2[indiceobjeto])
+            })
+        }
+
     
     </script>
     

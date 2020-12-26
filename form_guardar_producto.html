@@ -20,7 +20,7 @@
 	</form>
     </div>
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/3700816fe4e44252999626c1511db377/stock'
+    const API = 'https://crudcrud.com/api/eb5bbac8a8fc41a296f7a59b531ffda1/stock'
     
     let nombre   = document.querySelector('#productname')
 	let precio 	 = document.querySelector('#price')
@@ -34,7 +34,9 @@
             cantidad : quantity.value,
             nombre :  productname.value,
             precio : price.value,
-            active : 1
+            active : 1,
+            cliente: {},
+	        producto: {}
         }
         axios.post(API, stock).then( function (res){
 				console.log("success: ", res.data)
