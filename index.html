@@ -70,9 +70,9 @@
     
         if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
         const stock = {
-            cantidad : quantity.value,
-            nombre :  productname.value,
-            precio : price.value,
+            cantidad : cantidad.value,
+            nombre :  nombre.value,
+            precio : precio.value,
             active : 1,
             cliente: {},
 	        producto: {}
@@ -93,6 +93,31 @@
         } else {alert("completa todos los campos")}
     
     }    
+    const EditarEnStock = function () {
+			 const stock = {
+            cantidad : cantidad2.value,
+            nombre :  nombre2.value,
+            precio : precio2.value,
+            active : 1,
+            cliente: {},
+	        producto: {}
+			}
+
+			const _id = idProductoMod.value;
+			axios.put(API + '/' + _id, stock).then( function (res){
+				console.log("success: ", res.data)
+
+				alert("Producto actualizado correctamente.")
+			
+			}).catch( function (err){
+				
+				alert("Error al actualizar producto.")
+
+				console.log("error: ", err)
+			})
+
+			console.log("guardar ::", stock)
+		} 
 		axios.get(API).then( function (response){
 			let tr = ``
             let stock = response.data;
