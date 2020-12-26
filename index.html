@@ -25,12 +25,11 @@
         </tbody>
     </table>
 
-        <p id="productoSelec"></p>
-
     <script type="text/javascript">
     const API = 'https://crudcrud.com/api/eb5bbac8a8fc41a296f7a59b531ffda1/stock'
     let item = 0;
     let tbody = document.querySelector('tbody');
+    let productosSeleccionados = [];
         console.log(API)
         
 		axios.get(API).then( function (response){
@@ -73,6 +72,14 @@
                 let stock2 = response.data
             let productoSeleccionado = stock2[indiceobjeto]
             console.log(productoSeleccionado)
+            productosSeleccionados.push(
+                { _id :productoSeleccionado._id, 
+                cantidad : productoSeleccionado.cantidad, 
+                nombre : productoSeleccionado.nombre,
+                precio : productoSeleccionado.precio,
+                active: productoSeleccionado.active});
+                
+            console.log(productosSeleccionados)
             })
 
         }
@@ -80,7 +87,8 @@
             console.log(indiceobjeto)
             axios.get(API).then( function (response) {
                 let stock2 = response.data
-                console.log(stock2[indiceobjeto])
+                let productoEliminado = stock2[indiceobjeto]
+                console.log(productoEliminado)
             })
         }
 
