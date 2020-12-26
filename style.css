@@ -1,0 +1,17 @@
+@media all {
+	* {
+        box-sizing: border-box;
+        margin: 0;
+	}
+	body {
+		font-family: sans-serif;
+        margin: 0;
+        
+    }
+    .container {
+        background-color: cadetblue;
+        color: white;
+	
+	}
+
+}
