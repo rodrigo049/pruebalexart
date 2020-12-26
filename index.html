@@ -7,7 +7,32 @@
     <title>Prueba front Lexart Labs - Mostrar productos</title>
 </head>
 <body>
-    
+    <div class="contenedorflex">
+        <div class="container">
+            <form id="form--stock" >
+                Producto: <input type="text" id="productname" class="input" placeholder="Product_Name">
+                <br>
+                Cantidad: <input type="number" id="quantity" class="input" placeholder="Quantity">
+                <br>
+                Precio: <input type="number" id="price" class="input" placeholder="Price">
+                <br>
+                <button type="button" class="btn" onclick="guardarEnStock()">New product</button>
+            </form>
+        </div>
+        <div class="container">
+            <form id="form--stock" >
+                _id <input type="text" id="_id" class="input" placeholder="ID_Producto">
+                <br>
+                Producto: <input type="text" id="productname2" class="input" placeholder="Product_Name">
+                <br>
+                Cantidad: <input type="number" id="quantity2" class="input" placeholder="Quantity">
+                <br>
+                Precio: <input type="number" id="price2" class="input" placeholder="Price">
+                <br>
+                <button type="button" class="btn" onclick="EditarEnStock()">Edit product</button>
+            </form>
+        </div>
+    </div>
     <table>
 		<thead> 
             <tr>
@@ -26,12 +51,48 @@
     </table>
 
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/eb5bbac8a8fc41a296f7a59b531ffda1/stock'
-    let item = 0;
+    const API = 'https://crudcrud.com/api/e959f1c5fede44e1aef79bd22090f7a7/stock'
+
+
+
     let tbody = document.querySelector('tbody');
     let productosSeleccionados = [];
         console.log(API)
-        
+    let nombre   = document.querySelector('#productname')
+	let precio 	 = document.querySelector('#price')
+    let cantidad = document.querySelector('#quantity')
+    let active
+    let idProductoMod   = document.querySelector('#_id')
+    let nombre2   = document.querySelector('#productname2')
+	let precio2 	 = document.querySelector('#price2')
+    let cantidad2 = document.querySelector('#quantity2')
+    const guardarEnStock = function () {
+    
+        if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
+        const stock = {
+            cantidad : quantity.value,
+            nombre :  productname.value,
+            precio : price.value,
+            active : 1,
+            cliente: {},
+	        producto: {}
+        }
+        axios.post(API, stock).then( function (res){
+				console.log("success: ", res.data)
+
+				alert("Producto creado correctamente.")
+			
+			}).catch( function (err){
+				
+				alert("Error al crear producto.")
+
+				console.log("error: ", err)
+			})
+
+			console.log("guardar ::", stock)
+        } else {alert("completa todos los campos")}
+    
+    }    
 		axios.get(API).then( function (response){
 			let tr = ``
             let stock = response.data;
@@ -39,7 +100,6 @@
             console.log(response.data)
 			for (let i = stock.length - 1; i >= 0; i--) {
                 let producto = stock[i];
-                item = i    ;
 				tr += `
 					<tr>
 						<td>${producto._id}</td>
@@ -47,15 +107,14 @@
                         <td>${producto.nombre}</td>
                         <td>${producto.precio}</td>
 			            <td>
-				            <button onclick="seleccionar(${item})"> Select </button>
+				            <button onclick="seleccionar('${producto._id}')"> Select </button>
                         </td>
                         <td>
-				            <button onclick="eliminar(${item})"> Delet </button>
+				            <button onclick="eliminar('${producto._id}')"> Delet </button>
                         </td>
                     </tr>
                     
                 `   
-                console.log(item)
 
 			}
             tbody.innerHTML = tr;
@@ -66,19 +125,19 @@
 			console.log("error: ", error)
         })
         
-        function seleccionar (indiceobjeto) {
-            console.log(indiceobjeto)
-            axios.get(API).then( function (response) {
+        function seleccionar (idproducto) {
+            console.log(idproducto)
+            axios.get(API + '/' + idproducto).then( function (response) {
                 let stock2 = response.data
-            let productoSeleccionado = stock2[indiceobjeto]
-            console.log(productoSeleccionado)
-            productosSeleccionados.push(
-                { _id :productoSeleccionado._id, 
-                cantidad : productoSeleccionado.cantidad, 
-                nombre : productoSeleccionado.nombre,
-                precio : productoSeleccionado.precio,
-                active: productoSeleccionado.active});
-                
+                console.log(stock2)
+                productosSeleccionados.push({
+    	            _id :stock2._id, 
+                    cantidad : stock2.cantidad, 
+                    nombre : stock2.nombre,
+                    precio : stock2.precio,
+                    active: stock2.active
+                })
+                            
             console.log(productosSeleccionados)
             })
 

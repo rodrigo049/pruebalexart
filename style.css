@@ -13,6 +13,9 @@
     table {
         border: black 3px solid;
       }
+    .contenedorflex {
+        display: flex;
+    }
 
     .container {
         background-color: cadetblue;
