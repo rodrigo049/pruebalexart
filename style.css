@@ -2,16 +2,34 @@
 	* {
         box-sizing: border-box;
         margin: 0;
+        text-align: center;
+        
 	}
 	body {
 		font-family: sans-serif;
         margin: 0;
-        
+            
     }
+    table {
+        border: black 3px solid;
+      }
+
     .container {
         background-color: cadetblue;
         color: white;
-	
-	}
+        width: 300px;
+        
+    }
+    .btn {
+        background-color: teal;
+        color: white;
+        width: 100px;
+        margin: 5px;
+
+    }
+    .input {
+        width: 150px;
+        margin: 3px;
+    }
 
 }

@@ -4,33 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
     <title>Prueba front Lexart Labs - Guardar productos</title>
 </head>
-<body>
-    <p>estoy en DEV</p>
-    <form id="form--stock">
-		<input type="text" id="productname" placeholder="Product_Name">
+<body >
+    <div class="container">
+    <form id="form--stock" >
+		Producto: <input type="text" id="productname" class="input" placeholder="Product_Name">
 		<br>
-		<input type="number" id="quantity" placeholder="Quantity">
+		Cantidad: <input type="number" id="quantity" class="input" placeholder="Quantity">
 		<br>
-		<input type="number" id="price" placeholder="Price">
+		Precio: <input type="number" id="price" class="input" placeholder="Price">
 		<br>
-		<button type="button" onclick="guardarEnStock()">Save</button>
+		<button type="button" class="btn" onclick="guardarEnStock()">Save</button>
 	</form>
-
+    </div>
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/e044d683d09846ae8e6e175ff94af708/stock'
+    const API = 'https://crudcrud.com/api/3700816fe4e44252999626c1511db377/stock'
     
     let nombre   = document.querySelector('#productname')
 	let precio 	 = document.querySelector('#price')
     let cantidad = document.querySelector('#quantity')
-    let id1 = 0
+    let active
+
     const guardarEnStock = function () {
-        id1 += 1
+    
+        if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
         const stock = {
             cantidad : quantity.value,
             nombre :  productname.value,
-            precio : price.value
+            precio : price.value,
+            active : 1
         }
         axios.post(API, stock).then( function (res){
 				console.log("success: ", res.data)
@@ -45,7 +49,7 @@
 			})
 
 			console.log("guardar ::", stock)
-    
+        } else {alert("completa todos los campos")}
     
     }
     
