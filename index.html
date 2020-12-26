@@ -30,6 +30,7 @@
                 Precio: <input type="number" id="price2" class="input" placeholder="Price">
                 <br>
                 <button type="button" class="btn" onclick="EditarEnStock()">Edit product</button>
+                <button type="button" class="btn" onclick="EliminarEnStock()">Delet product</button>
             </form>
         </div>
     </div>
@@ -66,8 +67,8 @@
     let nombre2   = document.querySelector('#productname2')
 	let precio2 	 = document.querySelector('#price2')
     let cantidad2 = document.querySelector('#quantity2')
-    const guardarEnStock = function () {
     
+    const guardarEnStock = function () {
         if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
         const stock = {
             cantidad : cantidad.value,
@@ -80,7 +81,8 @@
         axios.post(API, stock).then( function (res){
 				console.log("success: ", res.data)
 
-				alert("Producto creado correctamente.")
+                alert("Producto creado correctamente.")
+                datosTabla();
 			
 			}).catch( function (err){
 				
@@ -93,8 +95,10 @@
         } else {alert("completa todos los campos")}
     
     }    
-    const EditarEnStock = function () {
-			 const stock = {
+   
+        const EditarEnStock = function () {
+            if (precio2.value > 0 && cantidad2.value > 0 && nombre2.value != "") {
+			const stock = {
             cantidad : cantidad2.value,
             nombre :  nombre2.value,
             precio : precio2.value,
@@ -107,7 +111,8 @@
 			axios.put(API + '/' + _id, stock).then( function (res){
 				console.log("success: ", res.data)
 
-				alert("Producto actualizado correctamente.")
+                alert("Producto actualizado correctamente.")
+                datosTabla();
 			
 			}).catch( function (err){
 				
@@ -116,9 +121,27 @@
 				console.log("error: ", err)
 			})
 
-			console.log("guardar ::", stock)
-		} 
-		axios.get(API).then( function (response){
+            console.log("guardar ::", stock)
+        } else {alert("completa todos los campos")}
+        } 
+        const EliminarEnStock = function () {
+            const _id = idProductoMod.value;
+			axios.delete(API + '/' + _id).then( function (res){
+				console.log("success: ", res.data)
+
+                alert("Producto eliminado correctamente.")
+                datosTabla();
+			
+			}).catch( function (err){
+				
+				alert("Error al eliminar producto.")
+
+				console.log("error: ", err)
+			})
+        }
+
+		let datosTabla = function () { 
+            axios.get(API).then( function (response){
 			let tr = ``
             let stock = response.data;
             
@@ -149,6 +172,8 @@
 		}).catch( function (error){
 			console.log("error: ", error)
         })
+        }
+        datosTabla();
         
         function seleccionar (idproducto) {
             console.log(idproducto)
