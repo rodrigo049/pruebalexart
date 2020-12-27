@@ -51,13 +51,16 @@
         </tbody>
     </table>
 
+    <form id="resultadoSeleccion" class="ProdSelec">
+
+    </form>
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/e959f1c5fede44e1aef79bd22090f7a7/stock'
+    const API = 'https://crudcrud.com/api/dcd9634f2b034d58971da9fe998864f8/stock'
 
 
 
     let tbody = document.querySelector('tbody');
-    let productosSeleccionados = [];
+    let productoSeleccionado = {}
         console.log(API)
     let nombre   = document.querySelector('#productname')
 	let precio 	 = document.querySelector('#price')
@@ -67,34 +70,35 @@
     let nombre2   = document.querySelector('#productname2')
 	let precio2 	 = document.querySelector('#price2')
     let cantidad2 = document.querySelector('#quantity2')
+    let carrito = []
     
-    const guardarEnStock = function () {
-        if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
-        const stock = {
-            cantidad : cantidad.value,
-            nombre :  nombre.value,
-            precio : precio.value,
-            active : 1,
-            cliente: {},
-	        producto: {}
-        }
-        axios.post(API, stock).then( function (res){
-				console.log("success: ", res.data)
+        const guardarEnStock = function () {
+            if (precio.value > 0 && cantidad.value > 0 && nombre.value != "") {
+            const stock = {
+                cantidad : cantidad.value,
+                nombre :  nombre.value,
+                precio : precio.value,
+                active : 1,
+                cliente: {},
+                producto: {}
+            }
+            axios.post(API, stock).then( function (res){
+                    console.log("success: ", res.data)
 
-                alert("Producto creado correctamente.")
-                datosTabla();
-			
-			}).catch( function (err){
-				
-				alert("Error al crear producto.")
+                    alert("Producto creado correctamente.")
+                    datosTabla();
+                
+                }).catch( function (err){
+                    
+                    alert("Error al crear producto.")
 
-				console.log("error: ", err)
-			})
+                    console.log("error: ", err)
+                })
 
-			console.log("guardar ::", stock)
-        } else {alert("completa todos los campos")}
-    
-    }    
+                console.log("guardar ::", stock)
+            } else {alert("completa todos los campos")}
+        
+        }    
    
         const EditarEnStock = function () {
             if (precio2.value > 0 && cantidad2.value > 0 && nombre2.value != "") {
@@ -177,27 +181,80 @@
         
         function seleccionar (idproducto) {
             console.log(idproducto)
+            let resultadoSeleccion   = document.querySelector('#resultadoSeleccion')
             axios.get(API + '/' + idproducto).then( function (response) {
                 let stock2 = response.data
-                console.log(stock2)
-                productosSeleccionados.push({
-    	            _id :stock2._id, 
+                let productosSeleccionados = ``
+                productoSeleccionado = {
+                    _id :stock2._id, 
                     cantidad : stock2.cantidad, 
                     nombre : stock2.nombre,
                     precio : stock2.precio,
                     active: stock2.active
-                })
+                }
+            carrito.push(productoSeleccionado)        
+            console.log(productoSeleccionado,carrito)
+            for (let i = 0; i < carrito.length; i++) {
+                let produselec = carrito[i];
+
+                productosSeleccionados += 
+                ` 
+                <ul>
+                    <li> ID Producto: ${produselec._id} </ul>
+                    <li> Cantidad: ${produselec.cantidad} </ul>
+                    <li> Producto: ${produselec.nombre} </ul>
+                    <li> Precio: ${produselec.precio} </ul>
                             
-            console.log(productosSeleccionados)
+                </ul>
+                
+                `
+                resultadoSeleccion.innerHTML = productosSeleccionados
+                
+            }
+            
             })
 
         }
-        function eliminar (indiceobjeto) {
-            console.log(indiceobjeto)
-            axios.get(API).then( function (response) {
+        function eliminar (idproducto) {
+            console.log(idproducto)
+            axios.get(API + '/' + idproducto).then( function (response) {
                 let stock2 = response.data
-                let productoEliminado = stock2[indiceobjeto]
-                console.log(productoEliminado)
+                let productosEliminados = `` 
+                let productoEliminado = {
+                    _id :stock2._id, 
+                    cantidad : stock2.cantidad, 
+                    nombre : stock2.nombre,
+                    precio : stock2.precio,
+                    active: stock2.active
+                }
+               for (let i = 0; i < carrito.length; i++) {
+                    const element = carrito[i];
+                    console.log("estoy en el for de chequeo")
+                    console.log("elemento ID", element._id, "productoEliminado ID", productoEliminado._id)
+                if (element._id == productoEliminado._id) {
+                    console.log("estoy en el if y el producto eliminado es", carrito[i])
+                } 
+                }
+       
+            
+            console.log(productoEliminado,carrito)
+            for (let i = 0; i < carrito.length; i++) {
+                let produselim = carrito[i];
+
+                productosEliminados += 
+                ` 
+                <ul>
+                    <li> ID Producto: ${produselim._id} </ul>
+                    <li> Cantidad: ${produselim.cantidad} </ul>
+                    <li> Producto: ${produselim.nombre} </ul>
+                    <li> Precio: ${produselim.precio} </ul>
+                            
+                </ul>
+                
+                `
+                resultadoSeleccion.innerHTML = productosEliminados
+                
+            }
             })
         }
 

@@ -2,7 +2,6 @@
 	* {
         box-sizing: border-box;
         margin: 0;
-        text-align: center;
         
 	}
 	body {
@@ -22,6 +21,10 @@
         color: white;
         width: 300px;
         
+    }
+    .ProdSelec {
+        margin: 3px;
+
     }
     .btn {
         background-color: teal;
