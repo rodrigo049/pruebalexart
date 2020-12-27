@@ -55,7 +55,7 @@
 
     </form>
     <script type="text/javascript">
-    const API = 'https://crudcrud.com/api/dcd9634f2b034d58971da9fe998864f8/stock'
+    const API = 'https://crudcrud.com/api/90acf3dd82ac4bf8b7abe3eb20513418/stock'
 
 
 
@@ -196,7 +196,7 @@
             console.log(productoSeleccionado,carrito)
             for (let i = 0; i < carrito.length; i++) {
                 let produselec = carrito[i];
-
+                if (carrito[i] != undefined) {
                 productosSeleccionados += 
                 ` 
                 <ul>
@@ -207,7 +207,7 @@
                             
                 </ul>
                 
-                `
+                ` }
                 resultadoSeleccion.innerHTML = productosSeleccionados
                 
             }
@@ -229,10 +229,11 @@
                 }
                for (let i = 0; i < carrito.length; i++) {
                     const element = carrito[i];
-                    console.log("estoy en el for de chequeo")
-                    console.log("elemento ID", element._id, "productoEliminado ID", productoEliminado._id)
-                if (element._id == productoEliminado._id) {
+                    let e = i-1 
+    
+                if (carrito[i] != undefined && element._id == productoEliminado._id) {
                     console.log("estoy en el if y el producto eliminado es", carrito[i])
+                    delete carrito [i]
                 } 
                 }
        
@@ -240,6 +241,7 @@
             console.log(productoEliminado,carrito)
             for (let i = 0; i < carrito.length; i++) {
                 let produselim = carrito[i];
+                if (carrito[i] != undefined) {
 
                 productosEliminados += 
                 ` 
@@ -252,8 +254,9 @@
                 </ul>
                 
                 `
+            } 
                 resultadoSeleccion.innerHTML = productosEliminados
-                
+            
             }
             })
         }
